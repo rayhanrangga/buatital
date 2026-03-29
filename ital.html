@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Valentine?</title>
+    <style>
+        :root {
+            --rose-gold: #B76E79;
+            --rose-gold-light: #c98a94;
+            --bg-page: #f4f4f4;
+            --bg-card: #ffffff;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh;
+            background-color: var(--bg-page);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(183, 110, 121, 0.15);
+            border: 1px solid rgba(183, 110, 121, 0.1);
+            text-align: center;
+            width: 85%;
+            max-width: 380px;
+            z-index: 10;
+        }
+
+        img {
+            max-width: 150px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        h2 { margin-bottom: 30px; font-weight: 600; font-size: 20px; }
+
+        .btn-group {
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            gap: 15px;
+            min-height: 150px;
+        }
+
+        button {
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, var(--rose-gold) 0%, var(--rose-gold-light) 100%);
+            color: white;
+            z-index: 100;
+        }
+
+        #noBtn {
+            background-color: #eee;
+            color: #888;
+            border: 1px solid #ddd;
+            position: relative;
+            z-index: 50;
+        }
+
+        .success-message { display: none; flex-direction: column; align-items: center; }
+        h1 { color: var(--rose-gold); margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="content">
+        <img src="https://media.tenor.com/978rU1-bU9QAAAAM/minions-love.gif" alt="Minion">
+        <h2>Ital mau jalan sama aku ga?</h2>
+        
+        <div class="btn-group">
+            <button id="yesBtn">bole bole bole</button>
+            <button id="noBtn">GAK</button>
+        </div>
+    </div>
+
+    <div class="card success-message" id="success">
+        <div class="tenor-gif-embed" data-postid="14345055558441530836" data-share-method="host" data-aspect-ratio="1.12245" data-width="100%"><a href="https://tenor.com/view/cat-gif-14345055558441530836">Cat Sticker</a>from <a href="https://tenor.com/search/cat-stickers">Cat Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+        <h1>YAYYYYYY<h1>
+        <p style="color:#777">What When Where? chat aku aja ya</p>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const content = document.getElementById('content');
+        const success = document.getElementById('success');
+        
+        let scale = 1;
+        let noClickCount = 0;
+
+        const noTexts = [
+            "No",
+            "SERIUS LU?",
+            "sumpah ga sih?",
+            "ital please",
+            "huhu sekali ini aja",
+            "jangan begini cinta",
+            "KLIK YES SUSAH BENER",
+        ];
+
+        function moveNo() {
+            noClickCount++;
+            if (noClickCount < noTexts.length) {
+                noBtn.innerText = noTexts[noClickCount];
+            } else {
+                noBtn.innerText = "KLIK YES SUSAH BENER";
+            }
+
+            noBtn.style.position = 'fixed';
+            const yesRect = yesBtn.getBoundingClientRect();
+            const padding = 25; 
+            let newX, newY, isOverlapping;
+            let attempts = 0;
+
+            do {
+                newX = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+                newY = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+                isOverlapping = (
+                    newX + noBtn.offsetWidth > yesRect.left - padding &&
+                    newX < yesRect.right + padding &&
+                    newY + noBtn.offsetHeight > yesRect.top - padding &&
+                    newY < yesRect.bottom + padding
+                );
+                attempts++;
+                if(attempts > 50) break; 
+            } while (isOverlapping);
+
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+
+            scale += 0.45;
+            yesBtn.style.transform = `scale(${scale})`;
+        }
+
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNo(); });
+        noBtn.addEventListener('mouseover', moveNo);
+
+        yesBtn.addEventListener('click', () => {
+            content.style.display = 'none';
+            success.style.display = 'flex';
+        });
+    </script>
+</body>
+</html>
